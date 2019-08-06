@@ -1,0 +1,6 @@
+# The following entries are examples and not intended to be used
+# Create a copy of this file and name it 'vars'
+# Then remove these comments from the top of the new file
+service1 https://hc-ping.com/00000000-0000-0000-0000-000000000001
+service2 https://hc-ping.com/00000000-0000-0000-0000-000000000002
+service3 https://hc-ping.com/00000000-0000-0000-0000-000000000003
