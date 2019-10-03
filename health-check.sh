@@ -135,10 +135,30 @@ while read f1 f2; do
 
   # Perform status check on system service
   printf "$(timestamp)   ${DIM}- Status check:${NC}     "
-  STATUS="$(systemctl is-active --quiet "${f1}".service && echo true)"
+
+  # Declare retry iterator and restart flag
+  i="0"
+  ii="false"
+
+  # Loop through services, retry failed service 3 times before moving on
+  while [ $i -lt 3 ]; do
+    STATUS="$(systemctl is-active --quiet "${f1}".service && echo true)"
+
+    if [ "${STATUS}" = "true" ]; then
+      i="3"
+    else
+      systemctl restart ${f1}.service
+      i=$[$i+1]
+      ii="true"
+    fi
+  done
 
   if [ "${STATUS}" = "true" ]; then
-    printf "${GREEN}PASS${NC}\n"
+    if [ "${ii}" = "true" ]; then
+      printf "${YELLOW}RESTART${NC}\n"
+    else
+      printf "${GREEN}PASS${NC}\n"
+    fi
   else
     printf "${RED}FAIL${NC}\n"
   fi
